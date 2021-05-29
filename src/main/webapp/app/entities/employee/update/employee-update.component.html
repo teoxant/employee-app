@@ -1,0 +1,108 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate [formGroup]="editForm">
+      <!-- (ngSubmit)="save()" -->
+      <h2 id="employee-heading" data-cy="EmployeeCreateUpdateHeading">{{ isUpdate ? 'Create Employee' : 'Edit Employee' }}</h2>
+
+      <div class="my-lg-4">
+        <alert-error-component></alert-error-component>
+
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required />
+            <mat-error
+              *ngIf="editForm.get('firstName')!.invalid && (editForm.get('firstName')!.dirty || editForm.get('firstName')!.touched)"
+            >
+              <mat-error *ngIf="editForm.get('firstName')?.errors?.required">This field is required.</mat-error>
+              <mat-error *ngIf="editForm.get('firstName')?.errors?.minlength"
+                >This field is required to be at least 1 characters.</mat-error
+              >
+              <mat-error *ngIf="editForm.get('firstName')?.errors?.maxlength">This field cannot be longer than 50 characters.</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required />
+            <mat-error *ngIf="editForm.get('lastName')!.invalid && (editForm.get('lastName')!.dirty || editForm.get('lastName')!.touched)">
+              <mat-error *ngIf="editForm.get('lastName')?.errors?.required">This field is required.</mat-error>
+              <mat-error *ngIf="editForm.get('lastName')?.errors?.minlength">This field is required to be at least 1 characters.</mat-error>
+              <mat-error *ngIf="editForm.get('lastName')?.errors?.maxlength">This field cannot be longer than 100 characters.</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="pat@example.com" formControlName="email" />
+            <mat-error *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
+              <mat-error *ngIf="editForm.get('email')?.errors?.pattern">This field should follow pattern for "Email".</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Address</mat-label>
+            <input matInput formControlName="address" />
+            <mat-error *ngIf="editForm.get('address')!.invalid && (editForm.get('address')!.dirty || editForm.get('address')!.touched)">
+              <mat-error *ngIf="editForm.get('address')?.errors?.minlength">This field is required to be at least 1 characters.</mat-error>
+              <mat-error *ngIf="editForm.get('address')?.errors?.maxlength">This field cannot be longer than 200 characters.</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Mobile Phone</mat-label>
+            <input matInput formControlName="mobile" required />
+            <mat-error *ngIf="editForm.get('mobile')!.invalid && (editForm.get('mobile')!.dirty || editForm.get('mobile')!.touched)">
+              <mat-error *ngIf="editForm.get('mobile')?.errors?.required">This field is required.</mat-error>
+              <mat-error *ngIf="editForm.get('mobile')?.errors?.minlength">This field is required to be at least 10 characters.</mat-error>
+              <mat-error *ngIf="editForm.get('mobile')?.errors?.maxlength">This field cannot be longer than 20 characters.</mat-error>
+              <mat-error *ngIf="editForm.get('mobile')?.errors?.pattern">This field should follow pattern for "Phone".</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Company</mat-label>
+            <mat-select formControlName="company" [compareWith]="compareFn">
+              <!--<mat-option value="option">Option</mat-option>-->
+              <mat-option
+                [value]="companyOption.id === editForm.get('company')!.value?.id ? editForm.get('company')!.value : companyOption"
+                *ngFor="let companyOption of companiesSharedCollection; trackBy: trackCompanyById"
+              >
+                {{ companyOption.name }}
+              </mat-option>
+            </mat-select>
+            <mat-hint align="end">Select a company or leave it blank</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button id="cancel-save" mat-flat-button color="accent" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          id="save-entity"
+          mat-flat-button
+          color="primary"
+          (click)="save()"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="mx-lg-2"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="company-heading" data-cy="CompanyCreateUpdateHeading">{{ isUpdate ? 'Create Company' : 'Edit Company' }}</h2>
+
+      <div class="my-lg-4">
+        <alert-error-component></alert-error-component>
+
+        <div class="form-group">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Company Name</mat-label>
+            <input matInput formControlName="name" required />
+            <mat-error *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+              <mat-error *ngIf="editForm.get('name')?.errors?.required">This field is required.</mat-error>
+              <mat-error *ngIf="editForm.get('name')?.errors?.minlength">This field is required to be at least 1 characters.</mat-error>
+              <mat-error *ngIf="editForm.get('name')?.errors?.maxlength">This field cannot be longer than 400 characters.</mat-error>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button id="cancel-save" mat-flat-button color="accent" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          id="save-entity"
+          mat-flat-button
+          color="primary"
+          (click)="save()"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="mx-lg-2"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

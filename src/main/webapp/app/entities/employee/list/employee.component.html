@@ -1,0 +1,69 @@
+<div>
+  <h2 id="page-heading" data-cy="EmployeeHeading">
+    <span>Employees</span>
+
+    <div class="d-flex justify-content-end">
+      <button mat-flat-button color="accent" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon [icon]="'sync'"></fa-icon>
+        <span>Refresh</span>
+      </button>
+
+      <button mat-flat-button color="primary" [routerLink]="['/employees/new']" class="mx-lg-2">
+        <fa-icon icon="plus"></fa-icon>
+        <span>Create</span>
+      </button>
+    </div>
+  </h2>
+
+  <alert-error-component></alert-error-component>
+
+  <alert-component></alert-component>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="employees?.length === 0">
+    <span>No employees found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="employees && employees.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <!--<th scope="col"><span>ID</span></th>-->
+          <th scope="col"><span>First Name</span></th>
+          <th scope="col"><span>Last Name</span></th>
+          <th scope="col"><span>Email</span></th>
+          <th scope="col"><span>Address</span></th>
+          <th scope="col"><span>Mobile</span></th>
+          <th scope="col"><span>Company</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of employees; trackBy: trackId" data-cy="entityTable">
+          <td>{{ employee.firstName }}</td>
+          <td>{{ employee.lastName }}</td>
+          <td>{{ employee.email }}</td>
+          <td>{{ employee.address }}</td>
+          <td>{{ employee.mobile }}</td>
+          <td>
+            <div *ngIf="employee.company">
+              <a [routerLink]="['/companies', employee.company?.id, 'edit']">{{ employee.company?.name }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button mat-flat-button color="primary" [routerLink]="['/employees', employee.id, 'edit']">
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline">Edit</span>
+              </button>
+
+              <button mat-flat-button color="warn" (click)="delete(employee)" class="mx-lg-2">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
